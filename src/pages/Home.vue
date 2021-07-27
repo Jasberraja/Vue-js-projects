@@ -26,45 +26,63 @@ export default {
     },
       data(){
         return {
-            tasks:[],
+            tasks:[ {
+      "text": "Trojan",
+      "day": "Tuesday",
+      "reminder": true,
+      "id": 2
+    },
+    {
+      "text": "Appointment",
+      "day": "saturday",
+      "reminder": true,
+      "id": 3
+    },
+    {
+      "text": "Vue Js",
+      "day": "Monday",
+      "reminder": true,
+      "id": 4
+    }],
         }
       },
       methods:{
  async addTask(task) {
-      const res = await fetch('api/tasks', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify(task),
-      })
-      const data = await res.json()
-      this.tasks = [...this.tasks, data]
+      // const res = await fetch('api/tasks', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-type': 'application/json',
+      //   },
+      //   body: JSON.stringify(task),
+      // })
+      // const data = await res.json()
+      this.tasks = [...this.tasks, task]
     },
 
 async deleteTask(id) {
-      if (confirm('Are you sure?')) {
-        const res = await fetch(`api/tasks/${id}`, {
-          method: 'DELETE',
-        })
-        res.status === 200
-          ? (this.tasks = this.tasks.filter((task) => task.id !== id))
-          : alert('Error deleting task')
-      }
+      // if (confirm('Are you sure?')) {
+      //   const res = await fetch(`api/tasks/${id}`, {
+      //     method: 'DELETE',
+      //   })
+      //   res.status === 200
+      //     ? (this.tasks = this.tasks.filter((task) => task.id !== id))
+      //     : alert('Error deleting task')
+      // }
+      this.tasks = this.tasks.filter((task) => task.id !== id)
     },
  async toggleReminder(id) {
-      const taskToToggle = await this.fetchTask(id)
-      const updTask = { ...taskToToggle, reminder: !taskToToggle.reminder }
-      const res = await fetch(`api/tasks/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify(updTask),
-      })
-      const data = await res.json()
+      // const taskToToggle = await this.fetchTask(id)
+      // const updTask = { ...taskToToggle, reminder: !taskToToggle.reminder }
+      // const res = await fetch(`api/tasks/${id}`, {
+      //   method: 'PUT',
+      //   headers: {
+      //     'Content-type': 'application/json',
+      //   },
+      //   body: JSON.stringify(updTask),
+      // })
+      // const data = await res.json()
       this.tasks = this.tasks.map((task) =>
-        task.id === id ? { ...task, reminder: data.reminder } : task
+        task.id === id ? { ...task, reminder: !task.reminder } : task
       )
     },
    async fetchTasks() {

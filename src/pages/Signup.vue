@@ -63,6 +63,12 @@ export default {
             })
             .then(res =>{
                 console.log(res);
+                 if(res.status==200){
+                    window.alert("Registered successfully");
+                }
+                else{
+                     window.alert("Register not successfull");
+                }
             })
             .catch(err=>{
                 console.log(err);

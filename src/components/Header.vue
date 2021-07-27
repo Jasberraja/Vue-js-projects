@@ -3,11 +3,12 @@
         <h4>
             {{title}}
         </h4>
-        <!-- <Button text="Open Form" @click="onOpenForm"></Button>
+        <!-- <Button text="Open Form" @click="onOpenForm"></Button> -->
         <Button v-show="homePage"
-        :text="showTaskForm ?'x close':'+ ADD'" 
+        :text="showTaskForm ?'x close':'+ ADD TASK'" 
         :color="showTaskForm ?'red':'green'" 
-        @click="$emit('click-add')" /> -->
+        @click="$emit('click-add')" />
+        <Button v-show="homePage" text="Log Out" color="red" @click="logOut" />
     </header>
 </template>
 
@@ -33,11 +34,14 @@ import Button from "./Button.vue"
         methods:{
             onOpenForm(){
                 this.$router.push('form');
+            },
+            logOut(){
+                this.$router.push('/');
             }
         },
         computed:{
             homePage(){
-                if(this.$route.path==='/'){
+                if(this.$route.path==='/home'){
                     return true;
                 }
                 else{

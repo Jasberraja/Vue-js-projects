@@ -25,7 +25,7 @@
 export default {
     name:'Login',
     methods:{
-        onLogin(e){
+       onLogin(e){
   e.preventDefault();           
    const loginData={
                 email:this.email ? this.email : "",
@@ -33,7 +33,7 @@ export default {
             }
             console.log(loginData);
 
-            fetch("api/login",{
+         fetch("api/login",{
         method:'POST',
          headers: {
           'Content-type': 'application/json',
@@ -43,7 +43,8 @@ export default {
             .then(res =>{
                 console.log(res);
                 if(res.status==200){
-                    window.alert("logged in successfully");
+                    // window.alert("logged in successfully");
+                      this.$router.push('home');
                 }
                 else{
                      window.alert("login not successfull");
@@ -52,6 +53,7 @@ export default {
             .catch(err=>{
                 console.log(err);
             })
+        
         }
     },
 
