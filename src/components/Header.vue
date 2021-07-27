@@ -8,6 +8,7 @@
         :text="showTaskForm ?'x close':'+ ADD TASK'" 
         :color="showTaskForm ?'red':'green'" 
         @click="$emit('click-add')" />
+        
         <Button v-show="homePage" text="Log Out" color="red" @click="logOut" />
     </header>
 </template>

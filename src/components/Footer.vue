@@ -1,7 +1,7 @@
 <template>
     <footer>
         <p>COPYRIGHT 2021</p>
-        <router-link to="/about">ABOUT</router-link>
+        <router-link to="/about" v-if="$route.path!=='/about'">ABOUT</router-link>
     </footer>
 </template>
 
