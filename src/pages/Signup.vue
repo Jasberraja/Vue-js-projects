@@ -6,26 +6,32 @@
             <div>
                 <label for="firstname">First Name</label>
                 <input v-model="firstName" class="form-control" id="firstname" type="text" placeholder="First name">
+                <span v-if="fn" style="color:red">{{fn}}</span>
             </div>
              <div>
                 <label for="lastname">Last Name</label>
                 <input v-model="lastName" class="form-control" id="lastname" type="text" placeholder="lastname">
+                <span v-if="ln" style="color:red">{{ln}}</span>
             </div>
             <div>
                 <label for="company">Company</label>
                 <input v-model="company" class="form-control" id="company" type="text" placeholder="company">
+                <span v-if="com" style="color:red">{{com}}</span>
             </div>
             <div>
                 <label>Email id:</label>
-                <input class="form-control" v-model="email" type="text" placeholder="email id">
+                <input class="form-control" v-model="email" type="email" placeholder="email id">
+                <span v-if="ee" style="color:red">{{ee}}</span>
             </div>
             <div>
                 <label>Password:</label>
                 <input class="form-control" v-model="password" type="password" placeholder="password">
+                <span v-if="pass" style="color:red">{{pass}}</span>
             </div>
             <div>
                 <label>Re Enter Password:</label>
                 <input class="form-control" v-model="rePass" type="password" placeholder="re enter password">
+                <span v-if="rpass" style="color:red">{{rpass}}</span>
             </div>
             <div>
                 <button class="btn" type="submit">SIGNUP</button>
@@ -40,11 +46,106 @@
 <script>
 export default {
     name:'Signup',
+    data(){
+return{
+    firstName:null,
+    lastName:null,
+    company:null,
+    email:null,
+    password:null,
+    rePass:null,
+    
+        fn:null,
+        ln:null,
+        com:null,
+        ee:null,
+        pass:null,
+        rpass:null,
+    
+}
+    },
+    watch:{
+        firstName(value){
+            if(!value){
+                this.fn="first name is required";
+            }else{
+                this.fn="";
+            }
+        },
+         lastName(value){
+            if(!value){
+                this.ln="last name is required";
+            }else{
+                this.ln="";
+            }
+        },
+         company(value){
+            if(!value){
+                this.com="company is required";
+            }else{
+                this.com="";
+            }
+        },
+         email(value){
+            if(!value){
+                this.ee="email id is required";
+            }else{
+                this.ee="";
+            }
+        },
+         password(value){
+            if(!value){
+                this.pass="password is required";
+            }else{
+                this.pass="";
+            }
+        },
+         rePass(value){
+            if(!value){
+                this.rpass="re enter password is required";
+            }else{
+                this.rpass="";
+            }
+        },
+    },
     methods:{
 
         onSignup(e){
-  e.preventDefault();           
-   const signupData={
+  e.preventDefault();     
+
+            if(!this.firstName){
+                this.fn="first name is required";
+            }else{
+                this.fn="";
+            }
+            if(!this.lastName){
+                this.ln="last name is required";
+            }else{
+                this.ln="";
+            }
+            if(!this.company){
+                this.com="company is required";
+            }else{
+                this.com="";
+            }
+            if(!this.email){
+                this.ee="email id is required";
+            }else{
+                this.ee="";
+            }
+            if(!this.password){
+                this.pass="password is required";
+            }else{
+                this.pass="";
+            }
+            if(!this.rePass){
+                this.rpass="re enter password is required";
+            }else{
+                this.rpass="";
+            }
+
+    if(!this.fn && !this.ln && !this.com && !this.ee && !this.pass && !this.rpass){
+ const signupData={
                 firstName:this.firstName ? this.firstName:"",
                 lastName:this.lastName ? this.lastName:"",
                 company:this.company ? this.company:"",
@@ -54,7 +155,7 @@ export default {
             if(this.password == this.rePass){
             console.log(signupData);
 
-            fetch("api/submit",{
+            fetch("submit",{
         method:'POST',
          headers: {
           'Content-type': 'application/json',
@@ -63,10 +164,12 @@ export default {
             })
             .then(res =>{
                 console.log(res);
-                 if(res.status==200){
+                 if(res.status == 200){
                     window.alert("Registered successfully");
-                }
-                else{
+                      this.$router.push('login');
+                }else if(res.status == 400){
+                        window.alert("Email id already exists");
+                    }else{
                      window.alert("Register not successfull");
                 }
             })
@@ -77,6 +180,8 @@ export default {
             window.alert('mismatch password')
         }
         }
+  }
+  
 
     }
 }

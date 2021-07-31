@@ -4,6 +4,7 @@ import Home from '../pages/Home';
 import Login from "../pages/Login";
 import Signup from "../pages/Signup"
 import Form from "../pages/Form";
+import Changepass from "../pages/change-password"
 
 
 const routes=[
@@ -31,7 +32,12 @@ const routes=[
         path:'/signup',
         name:'Signup',
         component:Signup
-    }
+    },
+    {
+        path:'/changepassword',
+        name:'Changepass',
+        component:Changepass
+    },
 ]
 
 const router = createRouter({

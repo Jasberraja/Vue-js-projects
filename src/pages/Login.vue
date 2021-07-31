@@ -3,15 +3,17 @@
 
     <div class="formdiv">
         <form @submit="onLogin">
-            <div>
+            <div class="input-div">
                 <label>Email id:</label>
                 <input class="form-control" v-model="email" type="text" placeholder="email id">
+                <span v-if="ee" style="color:red">{{ee}}</span>
             </div>
-            <div>
+            <div class="input-div">
                 <label>Password:</label>
                 <input class="form-control" v-model="password" type="password" placeholder="password">
+                <span v-if="pass" style="color:red">{{pass}}</span>
             </div>
-            <div>
+            <div class="input-div">
                 <button class="btn" type="submit">LOGIN</button>
                 <span>OR <router-link to="/signup">SIGNUP</router-link></span>
             </div>
@@ -22,39 +24,77 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name:'Login',
+    data(){
+        return {
+            email:null,
+            password:null,
+            ee:null,
+        pass:null,
+        }
+    },
+    watch:{
+         email(value){
+            if(!value){
+                this.ee="email id is required";
+            }else{
+                this.ee="";
+            }
+        },
+         password(value){
+            if(!value){
+                this.pass="password is required";
+            }else{
+                this.pass="";
+            }
+        },
+    },
     methods:{
        onLogin(e){
-  e.preventDefault();           
+  e.preventDefault();  
+   if(!this.email){
+                this.ee="email id is required";
+            }else{
+                this.ee="";
+            }
+            if(!this.password){
+                this.pass="password is required";
+            }else{
+                this.pass="";
+            }
+            
+    if(!this.ee && !this.pass)
+            {
    const loginData={
                 email:this.email ? this.email : "",
                 password:this.password ? this.password : ""
             }
             console.log(loginData);
 
-         fetch("api/login",{
-        method:'POST',
-         headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify(loginData),
-            })
-            .then(res =>{
-                console.log(res);
-                if(res.status==200){
+axios.post('login',loginData)
+  .then((response) => {
+    console.log(response);
+    console.log(response.status);
+                 if(response.status==200){
                     // window.alert("logged in successfully");
+                    localStorage.setItem('mail',response.data.email)
                       this.$router.push('home');
                 }
                 else{
                      window.alert("login not successfull");
                 }
-            })
-            .catch(err=>{
-                console.log(err);
-            })
+  })
+  .catch((error) => {
+    console.log(error);
+  });
         
         }
+        
+        }
+    
     },
 
 }
@@ -99,5 +139,8 @@ export default {
 .formdiv{
     margin-top: 50px;
     margin-bottom: 50px;
+}
+.input-div{
+margin: 20px;
 }
 </style>

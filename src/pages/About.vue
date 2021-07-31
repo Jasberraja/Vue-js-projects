@@ -1,5 +1,5 @@
 <template>
-    <h2>Developed by JASBER</h2>
+    <h2>Developed by JASBER AND DIXON</h2>
     <router-link to="/">Go Back</router-link>
 </template>
 

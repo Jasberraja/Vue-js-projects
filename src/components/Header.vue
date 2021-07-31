@@ -9,7 +9,10 @@
         :color="showTaskForm ?'red':'green'" 
         @click="$emit('click-add')" />
         
+        <Button v-show="homePage" text="Change Password" color="blue" @click="changePass" />
+
         <Button v-show="homePage" text="Log Out" color="red" @click="logOut" />
+
     </header>
 </template>
 
@@ -22,7 +25,7 @@ import Button from "./Button.vue"
         props:{
             title:{
                 type:String,
-                default:'JAS APP',
+                default:'JASDIX APP',
             },
             showTaskForm:{
                 type:Boolean,
@@ -37,7 +40,11 @@ import Button from "./Button.vue"
                 this.$router.push('form');
             },
             logOut(){
+                localStorage.clear();
                 this.$router.push('/');
+            },
+            changePass(){
+                this.$router.push('/changepassword');
             }
         },
         computed:{
