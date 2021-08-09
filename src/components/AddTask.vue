@@ -38,8 +38,9 @@ export default {
         return
             }
               const newTask={
+                userId:localStorage.getItem('id'),  
                 text:this.text,
-                day:this.day,
+                date:this.day,
                 reminder:this.reminder
             }
             this.$emit("add-task",newTask);

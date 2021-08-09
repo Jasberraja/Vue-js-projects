@@ -166,7 +166,7 @@ return{
                 console.log(res);
                  if(res.status == 200){
                     window.alert("Registered successfully");
-                      this.$router.push('login');
+                      this.$router.push('/');
                 }else if(res.status == 400){
                         window.alert("Email id already exists");
                     }else{

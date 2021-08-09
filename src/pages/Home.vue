@@ -26,49 +26,48 @@ export default {
     },
       data(){
         return {
-            tasks:[ {
-      "text": "Trojan",
-      "day": "Tuesday",
-      "reminder": true,
-      "id": 2
-    },
-    {
-      "text": "Appointment",
-      "day": "saturday",
-      "reminder": true,
-      "id": 3
-    },
-    {
-      "text": "Vue Js",
-      "day": "Monday",
-      "reminder": true,
-      "id": 4
-    }],
+            tasks:[],
         }
       },
       methods:{
  async addTask(task) {
-      // const res = await fetch('api/tasks', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-type': 'application/json',
-      //   },
-      //   body: JSON.stringify(task),
-      // })
-      // const data = await res.json()
-      this.tasks = [...this.tasks, task]
+
+      axios.post('addtask',task)
+  .then((response) => {
+    console.log(response);
+    console.log(response.status);
+                 if(response.status==200){
+                      this.tasks = [...this.tasks, response.data]
+                }
+                else{
+                     window.alert("Task stored not successfull");
+                }
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+                  
+        // this.tasks = [...this.tasks, task]
+  
     },
 
 async deleteTask(id) {
-      // if (confirm('Are you sure?')) {
-      //   const res = await fetch(`api/tasks/${id}`, {
-      //     method: 'DELETE',
-      //   })
-      //   res.status === 200
-      //     ? (this.tasks = this.tasks.filter((task) => task.id !== id))
-      //     : alert('Error deleting task')
-      // }
-      this.tasks = this.tasks.filter((task) => task.id !== id)
+      if (confirm('Are you sure?')) {    
+
+axios.delete(`deletetask/${id}`)
+  .then((response) => {
+    console.log(response);
+     if(response.status==200){
+    this.tasks = this.tasks.filter((task) => {
+    return task._id !== id
+    })
+     }else{
+       window.alert("delete not success");
+     }
+  })
+  
+
+      }
     },
  async toggleReminder(id) {
       // const taskToToggle = await this.fetchTask(id)
@@ -81,23 +80,38 @@ async deleteTask(id) {
       //   body: JSON.stringify(updTask),
       // })
       // const data = await res.json()
-      this.tasks = this.tasks.map((task) =>
-        task.id === id ? { ...task, reminder: !task.reminder } : task
+      // this.tasks = this.tasks.map((task) =>
+      //   task._id === id ? { ...task, reminder: !task.reminder } : task
+      // )
+ const taskToToggle =  this.tasks.filter((task) => {
+    return task._id == id
+    })
+      const updTask = { ...taskToToggle[0], reminder: !taskToToggle[0].reminder }
+
+      axios.put(`changetask/${id}`,updTask)
+      .then(response=>{
+        if(response.status==200){
+          this.tasks = this.tasks.map((task) =>
+        task._id === id ? { ...task, reminder: !task.reminder } : task
       )
+        }
+      })
+
     },
-   async fetchTasks() {
-      const res = await fetch('api/tasks')
-      const data = await res.json()
-      return data
+  fetchTasks() {
+    let userId = localStorage.getItem('id');
+     axios.get(`tasks/${userId}`).then(res=>{
+       console.log(res);
+       this.tasks=res.data  //get all tasks from backend
+     }).catch(err=>{
+       console.log(err);
+       window.alert("No Tasks");
+     })
     },
-    async fetchTask(id) {
-      const res = await fetch(`api/tasks/${id}`)
-      const data = await res.json()
-      return data
-    },
+   
   },
      async created(){
-        // this.tasks=await this.fetchTasks();
+        this.fetchTasks();
       },
 
 }
